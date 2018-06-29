@@ -2,7 +2,8 @@
 
 Loads data from MLB.com's stats api for yesterday's games into a slider which displays headline, image, and small description. 
 
-slider is navigated with left and right arrows on keyboard.
+The slider is navigated with left and right arrows on keyboard.
+
 Press Enter to toggle display of game details.
 
 ### Target Browser
@@ -20,7 +21,8 @@ To run the application locally:
 5. Navigation to `http://0.0.0.0:8000/` in browser.
 
 OR Access it directly from the web:
-[http://josephmschmidt.com/mlb-coding-exercise/]
+
+http://josephmschmidt.com/mlb-coding-exercise/
 
 ### Possible Updates
 * Infinite Scrolling
