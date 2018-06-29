@@ -1,0 +1,54 @@
+/*
+ * slider Styling
+ */
+
+.slider {
+  padding: 5rem 0;
+  overflow: hidden;
+  height: 40rem;
+  position: relative;
+
+  // Container for slides
+  // Update the position of this container as user navigates the slides
+  &__container {
+    list-style: none;
+    position: absolute;
+    width: 1000rem;
+    display: flex;
+    align-items: center;
+    transition: all .2s;
+  }
+
+  &__title,
+  &__description {
+    display: none;
+  }
+
+  &__image {
+    display: block;
+    width: 100%;
+    margin: 1rem 0;
+    border: 2px solid transparent;
+  }
+
+  &__slide {
+    width: 15rem;
+    padding: 2rem;
+    text-align: center;
+    &:not(:last-child) {
+      padding-right: 0;
+    }
+
+    // Set styles for selected slide
+    // Increase the width of the slide by 150%
+    // Display the text and description
+    &.selected {
+      width: 15rem*1.5;
+      .slider__title,
+      .slider__description { 
+        display: block;
+      }
+      .slider__image { border-color: $color-main; }
+    }
+  }
+}

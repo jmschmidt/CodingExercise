@@ -1,0 +1,16 @@
+{
+  "name": "codingexercise",
+  "version": "1.0.0",
+  "description": "Coding exercise",
+  "scripts": {
+    "start": "gulp"
+  },
+  "author": "Joseph Schmidt",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^3.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-connect": "^5.5.0",
+    "gulp-sass": "^4.0.1"
+  }
+}
