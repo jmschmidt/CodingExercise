@@ -38,14 +38,14 @@ class Slider {
       gamesListObj.dates[0].games.forEach((gameDataObject) => {
         const recap = gameDataObject.content.editorial.recap.mlb;
         if (recap) {
-          // TODO: select image by size property to always get specific image
+          // TODO: select alternative image by size property to always get specific image
           const game = new Game(
-            recap.media.headline,
-            recap.media.blurb,
-            recap.media.description,
-            recap.media.image.cuts[45].src,
-            recap.media.image.cuts[2].src,
-            recap.media.image.title
+            recap.headline || recap.media.headline || '',
+            recap.media.blurb || '',
+            recap.media.description || '' ,
+            recap.photo.cuts['640x360'].src || recap.media.image.cuts[45].src || '' ,
+            recap.photo.cuts['248x138'].src || recap.media.image.cuts[2].src || '' ,
+            recap.media.image.title || ''
           );
           this.gamesArray.push(game);
         }
