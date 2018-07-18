@@ -5,6 +5,7 @@
 
 import { fetchData } from './utils.js';
 import Modal from './modal.js';
+import Game from './game.js';
 
 class Slider {
   /*
@@ -15,6 +16,7 @@ class Slider {
     this.selectedClass = 'selected';
     this.container = slider.querySelector('.slider__container');
     this.modal = new Modal();
+    this.offsetSlideIndex = 0;
 
     // Array of Node elements in slider
     this.slides = [];
@@ -32,8 +34,21 @@ class Slider {
   loadContent() {
     fetchData((data) => {
       // Deal with response data
-      const dataObject = JSON.parse(data);
-      this.gamesArray = dataObject.dates[0].games;
+      const gamesListObj = JSON.parse(data);
+      gamesListObj.dates[0].games.forEach((gameDataObject) => {
+        const recap = gameDataObject.content.editorial.recap.mlb;
+        if (recap) {
+          const game = new Game(
+            recap.headline,
+            recap.seoTitle,
+            recap.blurb,
+            recap.photo.cuts['640x360'].src,
+            recap.photo.cuts['248x138'].src,
+            recap.photo.title
+          );
+          this.gamesArray.push(game);
+        }
+      });
 
       // Pass games data to Modal
       this.modal.init();
@@ -67,7 +82,7 @@ class Slider {
         // Enter button is Pressed
         case 13:
           self.modal.toggleDetails(
-            self.gamesArray[self.getIndexOfSelectedSlide()].content.editorial.recap.mlb
+            self.gamesArray[self.getIndexOfSelectedSlide()]
           );
           break;
         default:
@@ -105,11 +120,18 @@ class Slider {
   selectSlide(slideRight) {
     const currentIndex = this.getIndexOfSelectedSlide();
     const newIndex = slideRight ? currentIndex + 1 : currentIndex - 1;
+    const slidesPerScreen = Math.floor(window.innerWidth / this.getSlideWidth());
 
     // Design decision for how to move slider container
     // to make sure the selected slide is always visible on screen
-    // Position is decided by the selected slide index and the width of the slides 
-    this.container.style.left = `${-Math.abs(this.getSlideWidth() * newIndex)}px`;
+    if (slideRight && (newIndex >= this.offsetSlideIndex + slidesPerScreen)) {
+      this.offsetSlideIndex++;
+      this.container.style.left = `${-(Math.abs(this.getSlideWidth())*this.offsetSlideIndex)}px`;
+    }
+    else if (!slideRight && (newIndex < this.offsetSlideIndex)) {
+      this.offsetSlideIndex--;
+      this.container.style.left = `${-(Math.abs(this.getSlideWidth())*this.offsetSlideIndex)}px`;
+    }
 
     // Remove selected class from slide
     this.slides[currentIndex].classList.remove(this.selectedClass);
@@ -164,17 +186,15 @@ class Slider {
    * @returns markup
    */
   buildSlideListItem(gameObj) {
-    const recapItem = gameObj.content.editorial.recap.mlb;
-
     // Create new node item for slide
     const listItem = document.createElement('li');
 
     // Slide content markup template
     // Would prefer template to be in a separate file
     const markup = `
-      <h2 class='slider__title'>${recapItem.headline}</h2>
-      <img src='${recapItem.photo.cuts['248x138'].src}' alt='${recapItem.photo.title}' class='slider__image'>
-      <p class='slider__description'>${recapItem.seoTitle}</p>
+      <h2 class='slider__title'>${gameObj.headline}</h2>
+      <img src='${gameObj.smallImage}' alt='${gameObj.altText}' class='slider__image'>
+      <p class='slider__description'>${gameObj.subhead}</p>
     `;
 
     // Add slide class to new list item

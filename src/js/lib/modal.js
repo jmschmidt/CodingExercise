@@ -28,11 +28,10 @@ class Modal {
    * @param {Object} gameObj
    */
   openDetails(gameObj) {
-    const detailsData = gameObj;
     const detailsMarkup = `
-      <img src="${detailsData.photo.cuts['640x360'].src}" alt="${detailsData.photo.title}" class="modal__img">
-      <h2 class="modal__headline">${detailsData.headline}</h2>
-      <p class="modal__text">${detailsData.blurb}</p>
+      <img src="${gameObj.largeImage}" alt="${gameObj.altText}" class="modal__img">
+      <h2 class="modal__headline">${gameObj.headline}</h2>
+      <p class="modal__text">${gameObj.description}</p>
     `;
 
     // Add markup to new list item
