@@ -38,13 +38,14 @@ class Slider {
       gamesListObj.dates[0].games.forEach((gameDataObject) => {
         const recap = gameDataObject.content.editorial.recap.mlb;
         if (recap) {
+          // TODO: select image by size property to always get specific image
           const game = new Game(
-            recap.headline,
-            recap.seoTitle,
-            recap.blurb,
-            recap.photo.cuts['640x360'].src,
-            recap.photo.cuts['248x138'].src,
-            recap.photo.title
+            recap.media.headline,
+            recap.media.blurb,
+            recap.media.description,
+            recap.media.image.cuts[45].src,
+            recap.media.image.cuts[2].src,
+            recap.media.image.title
           );
           this.gamesArray.push(game);
         }
